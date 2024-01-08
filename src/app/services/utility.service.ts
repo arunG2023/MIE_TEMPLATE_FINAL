@@ -37,5 +37,10 @@ export class UtilityService {
     return this.http.get(this.baseAPIUrl+'/UserRoleMaster/GetEventData')
   }
 
+  // Get HCP roles from HCP Role Master
+  getHcpRoles(): Observable<any>{
+    return this.http.get(this.baseAPIUrl+'/EventType/GetHCPRoleData')
+  }
+
 
 }

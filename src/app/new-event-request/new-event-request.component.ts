@@ -8,7 +8,7 @@ import { UtilityService } from '../services/utility.service';
 })
 export class NewEventRequestComponent implements OnInit {
 
-  selectedEvent : string = 'select';
+  selectedEvent : string = 'select1w';
 
   // Event List 
   eventList : any[] = [];

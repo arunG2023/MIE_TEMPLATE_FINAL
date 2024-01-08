@@ -35,6 +35,7 @@ export class AddEmployeesComponent implements OnInit {
    constructor(private http : HttpClient,
              private dialog : MatDialog,
              private utilityService : UtilityService) {
+    
  
      this.addUserFrom = new FormGroup({
        roleName : new FormControl('', Validators.required),
@@ -74,16 +75,7 @@ export class AddEmployeesComponent implements OnInit {
        }
      )
 
-     // Getting employees role Sheet
-     this.utilityService.getAddedEmployees().subscribe(
-      res => {
-        this.tableDetails = res;
-        this.showTable = true;
-      },
-      err => {
-        alert("Unxepected Error Happened")
-      }
-    )
+     
     
  
     }
@@ -178,6 +170,17 @@ export class AddEmployeesComponent implements OnInit {
    
     
    ngOnInit() {
+    // Getting employees role Sheet
+    this.utilityService.getAddedEmployees().subscribe(
+      res => {
+        this.tableDetails = res;
+        this.showTable = true;
+      },
+      err => {
+        alert("Unxepected Error Happened")
+      }
+    )
+    
     this.detectFormChanges();
    }
  
