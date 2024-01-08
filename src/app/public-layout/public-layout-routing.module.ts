@@ -22,6 +22,7 @@ import { EventListComponent } from '../event-list/event-list.component';
 import { HonarariumListComponent } from '../honararium-list/honararium-list.component';
 
 import { AuthGuard } from '../guard/auth.guard';
+import { AddEmployeesComponent } from '../add-employees/add-employees.component';
 
 export const PublicLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent,canActivate:[AuthGuard] },
@@ -30,7 +31,8 @@ export const PublicLayoutRoutes: Routes = [
     { path: 'post-event-settlement', component: PostEventSettlementComponent,canActivate:[AuthGuard]   },
     { path: 'view-event-list', component: EventListComponent,canActivate:[AuthGuard]   },
     { path: 'view-honararium-list', component: HonarariumListComponent,canActivate:[AuthGuard]  },
-    { path: 'post-event-list', component: PostEventListComponent,canActivate:[AuthGuard]  }
+    { path: 'post-event-list', component: PostEventListComponent,canActivate:[AuthGuard]  },
+    { path: 'add-employees' , component: AddEmployeesComponent, canActivate:[AuthGuard]}
   
 
 ];

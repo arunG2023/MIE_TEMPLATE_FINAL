@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilityService } from '../services/utility.service';
 
 @Component({
   selector: 'app-new-event-request',
@@ -9,21 +10,22 @@ export class NewEventRequestComponent implements OnInit {
 
   selectedEvent : string = 'select';
 
-  // Event List -- TEST   *Will be from backend
-  eventList : any[] = [
-    {event_id: 1, name : 'Class I'},
-    {event_id: 2, name : 'Webinar'},
-    {event_id: 3, name : 'Medical Utility'},
-    {event_id: 4, name : 'Stall Fabrication'},
-    {event_id: 5, name : 'HCP Consultants'},
-    {event_id: 6, name : 'Class II'},
-    {event_id: 7, name : 'Class III'},
-    {event_id: 8, name : 'Demo Meetings'},
-    {event_id: 9, name : 'Hands on Training Workshops'},
-    {event_id: 10, name : 'Class IV'}
-  ]
+  // Event List 
+  eventList : any[] = [];
 
-  constructor() { }
+  constructor(private utility: UtilityService) { 
+    
+    utility.getEventTypes().subscribe(
+      res => {
+        // console.log(res)
+        this.eventList = res;
+      },
+      err => {
+        console.log(err)
+      }
+
+    )
+  }
 
   ngOnInit(): void {
   }

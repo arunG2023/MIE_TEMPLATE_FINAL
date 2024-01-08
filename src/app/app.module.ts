@@ -12,6 +12,7 @@ import { PublicLayoutComponent } from './public-layout/public-layout.component';
 import { LoginComponent } from './login/login.component';
 
 
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -26,7 +27,7 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     AppComponent,
     PublicLayoutComponent,
-    LoginComponent
+    LoginComponent,
 
   ],
   providers: [],

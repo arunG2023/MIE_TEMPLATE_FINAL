@@ -27,6 +27,6 @@ export class UserServiceService {
   // Login User for google single singON
   loginWithGoogle(credentials: string): Observable<any>{
     const header = new HttpHeaders().set('Content-type','application/json');
-    return this.http.post(this.baseApiUrl+"/LoginwithGoogle", JSON.stringify(credentials), { headers: header });
+    return this.http.post(this.baseApiUrl+"/LoginAndRegister/LoginwithGoogle", JSON.stringify(credentials), { headers: header });
     }
 }

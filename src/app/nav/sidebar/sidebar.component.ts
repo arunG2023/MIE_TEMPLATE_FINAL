@@ -16,6 +16,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/view-event-list', title: 'View Event Requests',  icon:'event', class: '' },
     { path: '/view-honararium-list', title: 'View Honararium Payment Request',  icon:'event', class: '' },
     { path: '/post-event-list', title: 'View Post Event Settlement Request',  icon:'event', class: '' },
+    { path: '/add-employees', title: 'Add Employees',  icon:'perm_contact_calendar', class: '' },
     
 ];
 
