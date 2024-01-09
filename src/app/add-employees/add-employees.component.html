@@ -4,7 +4,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header card-header-danger">
-                <h4 class="card-title">Adding Details UI</h4>
+                <h4 class="card-title">Adding Roles</h4>
             </div>
 
             
@@ -124,8 +124,8 @@
                                                     {{row.RoleName}}
                                                 </td>
                                                 <td style="cursor: pointer;">
-                                                    <i  (click)="openModal(i+1,row)"  class="material-icons" style="margin-right: 5px;">edit</i>
-                                                    <i class="material-icons">delete</i>
+                                                    <i  (click)="openModal(row)"  class="material-icons" style="margin-right: 5px;">edit</i>
+                                                    <i (click)="delete(i+1,row)" class="material-icons">delete</i>
                                                 </td>
                                             </tr> 
                                            <!-- <tr *ngFor="let detail of tableDetails">

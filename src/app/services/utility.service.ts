@@ -14,12 +14,12 @@ export class UtilityService {
 
   // TO get event types
   getEventTypes(): Observable<any>{
-    return this.http.get(this.baseAPIUrl+"/EventType/GetEventData")
+    return this.http.get(this.baseAPIUrl+"/MasterSheets/GetEventData")
   }
 
   // Get Roles
   getRoles(): Observable<any>{
-    return this.http.get(this.baseAPIUrl+'/EventType/GetRoleData')
+    return this.http.get(this.baseAPIUrl+'/MasterSheets/GetRoleData')
   }
 
   // Get employee details from Employee Master
@@ -29,7 +29,7 @@ export class UtilityService {
 
   // Add New Employees to User Role Master Sheet
   addEmployees(postData:any): Observable<any>{
-    return this.http.post('http://localhost:5098/api/UserRoleMaster/AddData', postData)
+    return this.http.post(this.baseAPIUrl+'/UserRoleMaster/AddData', postData)
   }
 
   // Get Added employees from UserRole Master sheet
@@ -39,14 +39,24 @@ export class UtilityService {
 
   // Get HCP roles from HCP Role Master
   getHcpRoles(): Observable<any>{
-    return this.http.get(this.baseAPIUrl+'/EventType/GetHCPRoleData')
+    return this.http.get(this.baseAPIUrl+'/MasterSheets/GetHCPRoleData')
   }
   
-  // Update employees:
+  // Update employees in HCP Role Master
   updateEmployees(putData:any): Observable<any>{
     return this.http.put(this.baseAPIUrl+'/UserRoleMaster/UpdateData',putData)
   } 
 
+  // Delete Employees from HCP Role Master
+  deleteEmployees(deleteData : any){
+    return this.http.delete(this.baseAPIUrl+`/UserRoleMaster/DeleteData/${deleteData.Email}`)
+    // console.log(this.baseAPIUrl+`/UserRoleMaster/DeleteData/${deleteData.Email}`)
+  }
+
+  // Get Brand Names
+  getBrandNames(){
+    return this.http.get(this.baseAPIUrl+'/MasterSheets/GetBrandNameData')
+  }
 
 
 }

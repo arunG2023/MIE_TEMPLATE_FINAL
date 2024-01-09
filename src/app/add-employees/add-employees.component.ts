@@ -48,6 +48,7 @@ export class AddEmployeesComponent implements OnInit {
       utilityService.getEventTypes().subscribe(
        res => {
        this.eventDetails = res;
+       console.log(res)
        },
        err => {
          alert("OOPS Some error occured")
@@ -69,6 +70,7 @@ export class AddEmployeesComponent implements OnInit {
      // Getting employee details from sheet
      utilityService.getEmployees().subscribe(res => {
        this.employeeDetails = res;
+       
        },
        err => {
          alert("OOPS Some error occured")
@@ -95,7 +97,7 @@ export class AddEmployeesComponent implements OnInit {
        this.postData = {
          Email : this.addUserFrom.value.email,
          EmployeeId : this.employeeId,
-         UserName : this.userName,
+         CreatedBy : this.userName,
          RoleId : this.addUserFrom.value.roleName,
          RoleName : this.roleName,
          FirstName : this.firstName,
@@ -134,6 +136,7 @@ export class AddEmployeesComponent implements OnInit {
       this.utilityService.getAddedEmployees().subscribe(
         res => {
           this.tableDetails = res;
+          console.log(res)
         },
         err => {
           alert("Unxepected Error Happened")
@@ -175,6 +178,7 @@ export class AddEmployeesComponent implements OnInit {
       res => {
         this.tableDetails = res;
         this.showTable = true;
+        console.log(res)
       },
       err => {
         alert("Unxepected Error Happened")
@@ -233,19 +237,18 @@ export class AddEmployeesComponent implements OnInit {
    }
  
    // Update Modal Implementation
-   openModal(id:any,data:any){
-     // console.log(id);
+   openModal(data:any){
+    
+     
      const dialogRef =  this.dialog.open(ModalComponent,{
        width: '600px',
        data : data
      })
  
-     // document.getElementById(id).innerHTML = '';
-    
  
      let updatedData;
      dialogRef.afterClosed().subscribe(res => {
-       // console.log(res)
+       
        updatedData = res;
 
  
@@ -255,6 +258,30 @@ export class AddEmployeesComponent implements OnInit {
  
      
    }
+
+  //  Delete a record from table
+  delete(id:any, data:any){
+    // console.log(data)
+    // document.getElementById(id).style.setProperty('display','none')
+    this.utilityService.deleteEmployees(data).subscribe(
+      res => {
+        // alert('User Deleted Succesfully');
+        this.utilityService.getAddedEmployees().subscribe(
+          res => {
+            this.tableDetails = res;
+            this.showTable = true;
+          },
+          err => {
+            alert("Unxepected Error Happened")
+          }
+        )
+      },
+      err => {
+        alert("Unexpected Error Happened")
+      }
+    )
+
+  }
 
  
  

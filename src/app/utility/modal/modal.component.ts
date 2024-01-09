@@ -13,11 +13,15 @@ import { UtilityService } from 'src/app/services/utility.service';
 export class ModalComponent implements OnInit {
   updateForm : FormGroup;
 
+  // Data From Sheet
+  roleDetails : any;
+
   // Update Fields
   firstName : string;
   lastName : string;
-  email : string;
+  userName : string;
   roleName : string;
+  roleId : string;
 
   text : string = "closed";
 
@@ -25,19 +29,31 @@ export class ModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private utilityService : UtilityService){
     
+      utilityService.getRoles().subscribe(
+        res => {
+          this.roleDetails = res
+          console.log(this.roleDetails)
+        },
+        err => {
+          alert("Unexpected Error Happened")
+        }
+      )
+    
     // this.fName = data.name
+    this.roleId = data.RoleId;
     this.firstName = data.FirstName;
     this.lastName = data.LastName;
-    this.email = data.Email;
+    this.userName = data.CreatedBy;
     this.roleName = data.RoleName;
+   
 
     console.log(data)
 
     this.updateForm = new FormGroup({
       firstName : new FormControl(this.firstName,[Validators.required]),
       lastName : new FormControl(this.lastName,[Validators.required]),
-      email : new FormControl(this.email, [Validators.required, Validators.email]),
-      roleName : new FormControl(this.roleName, [Validators.required])
+      userName : new FormControl(this.userName, [Validators.required]),
+      roleName : new FormControl(this.roleId, [Validators.required])
     })
   }
 
@@ -52,24 +68,33 @@ export class ModalComponent implements OnInit {
       // console.log(this.updateForm.value)
       this.data.FirstName = this.updateForm.value.firstName;
       this.data.LastName = this.updateForm.value.lastName;
-      this.data.Email = this.updateForm.value.email;
-      this.data.RoleName = this.updateForm.value.roleName;
+      this.data.CreatedBy = this.updateForm.value.userName;
+      this.data.RoleName = this._getRoleName(this.updateForm.value.roleName).RoleName;
+      this.data.RoleId = this.updateForm.value.roleName;
       console.log(this.data)
       this.utilityService.updateEmployees(this.data).subscribe(
         res  =>{
           console.log(res);
         },
         err => {
-          console.log("Update Emloyee Not working")
+          alert("Unexpected Error Happened")
         }
       )
 
-      this.dialogRef.close(this.updateForm.value)
+      this.dialogRef.close(this.data)
     }
 
   }
 
   ngOnInit(): void {
+  }
+
+  // Get Corresponding Role Name:
+  _getRoleName(id){
+    return this.roleDetails.find(role => {
+      return id == role.RoleId
+    })
+
   }
 
 }

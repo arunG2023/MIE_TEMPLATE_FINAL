@@ -18,17 +18,21 @@
                             <!-- DropDown to select the event type -->
                               <div class="row"  *ngIf="selectedEvent=='select'">
                                   <div class="col-md-6">
-                                      <mat-form-field class="example-full-width" >
+                                      <mat-form-field color="accent" appearance="outline" class="example-full-width" >
                                           <mat-label>Select Event Type</mat-label>
                                           <mat-select required [(ngModel)]="selectedEvent">
-                                            <mat-option *ngFor="let event of eventList" value="{{event['EventTypeId']}}">{{event.EventType}}</mat-option>
+                                            <mat-option *ngFor="let event of eventList" value="{{event.EventTypeId}}">{{event.EventType}}</mat-option>
                                            
                                           </mat-select>
                                         </mat-form-field>                                      
                                     </div>
                               </div>
 
-                              <app-class1-event-request *ngIf="selectedEvent !== 'select'"></app-class1-event-request>
+                              <app-class1-event-request *ngIf="selectedEvent == 'EVT1'"></app-class1-event-request>
+
+                              <div *ngIf="selectedEvent !== 'select' && selectedEvent !=='EVT1'">
+                                OOPS!!!! No other Event Forms yet developed
+                              </div>
                       </div>
                   </div>
               </div>      

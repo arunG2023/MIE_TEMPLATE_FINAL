@@ -1,4 +1,4 @@
-<form [formGroup]="updateForm" (ngSubmit)="submit()" >
+<form [formGroup]="updateForm"  >
     <mat-form-field appearance="outline">
         <mat-label>First Name</mat-label>
         <input  matInput placeholder="Prepopulate from Sheet" formControlName="firstName" >
@@ -8,16 +8,19 @@
         <input  matInput placeholder="Prepopulate from Sheet" formControlName="lastName">
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input  matInput placeholder="Prepopulate from Sheet" formControlName="email" >
+        <mat-label>User Name</mat-label>
+        <input  matInput placeholder="Prepopulate from Sheet" formControlName="userName" >
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Role Name</mat-label>
-        <input  matInput placeholder="Prepopulate from Sheet" formControlName="roleName" >
+        <!-- <input matInput placeholder="Placeholder"> -->
+        <mat-select formControlName="roleName" >
+            <mat-option *ngFor="let role of roleDetails" value={{role.RoleId}}>{{role.RoleName}}</mat-option>
+        </mat-select>
     </mat-form-field>
     
     <div class="d-flex justify-content-center align-items-center">
-        <button mat-raised-button color="primary" type="submit" class="mr-2" >Update</button>
+        <button mat-raised-button color="primary" (click)="submit()" type="submit" class="mr-2" >Update</button>
         <button mat-raised-button color="warn"  (click)="close()">Cancel</button>
     </div>
 </form>

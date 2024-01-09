@@ -8,7 +8,7 @@ import { UtilityService } from '../services/utility.service';
 })
 export class NewEventRequestComponent implements OnInit {
 
-  selectedEvent : string = 'select1w';
+  selectedEvent : string = 'select';
 
   // Event List 
   eventList : any[] = [];
@@ -27,7 +27,10 @@ export class NewEventRequestComponent implements OnInit {
     )
   }
 
+
+
   ngOnInit(): void {
+    
   }
 
 }
