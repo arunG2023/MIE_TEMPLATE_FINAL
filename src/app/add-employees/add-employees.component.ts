@@ -195,6 +195,7 @@ export class AddEmployeesComponent implements OnInit {
            // console.log(this.addUserFrom.controls['email'].valid)
            if(this.addUserFrom.controls['email'].valid){
              const employee =  this._getDetails(this.addUserFrom.controls['email'].value);
+             console.log(employee)
              this.firstName = employee.FirstName
              this.lastName = employee.LastName
              this.userName = employee.UserName

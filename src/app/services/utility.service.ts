@@ -41,6 +41,12 @@ export class UtilityService {
   getHcpRoles(): Observable<any>{
     return this.http.get(this.baseAPIUrl+'/EventType/GetHCPRoleData')
   }
+  
+  // Update employees:
+  updateEmployees(putData:any): Observable<any>{
+    return this.http.put(this.baseAPIUrl+'/UserRoleMaster/UpdateData',putData)
+  } 
+
 
 
 }

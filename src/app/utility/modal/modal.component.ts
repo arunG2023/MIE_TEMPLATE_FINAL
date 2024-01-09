@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddEmployeesComponent } from 'src/app/add-employees/add-employees.component';
+import { UtilityService } from 'src/app/services/utility.service';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class ModalComponent implements OnInit {
   text : string = "closed";
 
   constructor(public dialogRef : MatDialogRef<AddEmployeesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data){
+    @Inject(MAT_DIALOG_DATA) public data,
+    private utilityService : UtilityService){
     
     // this.fName = data.name
     this.firstName = data.FirstName;
@@ -53,6 +55,14 @@ export class ModalComponent implements OnInit {
       this.data.Email = this.updateForm.value.email;
       this.data.RoleName = this.updateForm.value.roleName;
       console.log(this.data)
+      this.utilityService.updateEmployees(this.data).subscribe(
+        res  =>{
+          console.log(res);
+        },
+        err => {
+          console.log("Update Emloyee Not working")
+        }
+      )
 
       this.dialogRef.close(this.updateForm.value)
     }
