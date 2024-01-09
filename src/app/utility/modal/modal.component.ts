@@ -43,9 +43,17 @@ export class ModalComponent implements OnInit {
     this.dialogRef.close(this.text)
   }
 
+  updatedData : any;
+
   submit(){
     if(this.updateForm.valid){
       // console.log(this.updateForm.value)
+      this.data.FirstName = this.updateForm.value.firstName;
+      this.data.LastName = this.updateForm.value.lastName;
+      this.data.Email = this.updateForm.value.email;
+      this.data.RoleName = this.updateForm.value.roleName;
+      console.log(this.data)
+
       this.dialogRef.close(this.updateForm.value)
     }
 

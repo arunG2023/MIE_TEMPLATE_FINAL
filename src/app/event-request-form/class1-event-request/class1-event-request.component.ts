@@ -12,7 +12,8 @@ export class Class1EventRequestComponent implements OnInit {
   eventInitiation1 : FormGroup;
   eventInitiation2 : FormGroup;
   eventInitiation3 : FormGroup;
-  eventinitiation4 : FormGroup;
+  eventInitiation4 : FormGroup;
+  eventInitiation5 : FormGroup;
 
   // Data From sheet:
   eventDetails : any;
@@ -87,8 +88,12 @@ export class Class1EventRequestComponent implements OnInit {
       goNonGo : new FormControl('',[Validators.required])
     })
 
-    this.eventinitiation4 = new FormGroup({
-      presentationDuration : new FormControl('',[Validators.required])
+    this.eventInitiation4 = new FormGroup({
+      presentationDuration : new FormControl('',[Validators.required]),
+      panelSessionPreparation : new FormControl('',[Validators.required]),
+      qaSession : new FormControl('',[Validators.required]),
+      briefingDuration : new FormControl('',[Validators.required]),
+      totalHours : new FormControl('',[Validators.required])
     })
   }
 

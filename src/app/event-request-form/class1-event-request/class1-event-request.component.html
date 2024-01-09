@@ -11,8 +11,6 @@
                 <mat-radio-button value="Yes">Yes</mat-radio-button>
                 <mat-radio-button value="No">No</mat-radio-button>
                </div> 
-               
-            
             </mat-radio-group>
           </div>
           <div class="col-md-6" *ngIf="toUploadDeviation1">
@@ -246,73 +244,49 @@
       </form>
 </mat-step>
 <mat-step label="Event-initiation4">
-  <form [formGroup]="eventinitiation4">
+  <form [formGroup]="eventInitiation4">
       <div class="row">
-      <div class="col">
-        <mat-form-field color="accent" appearance="outline">
-          <mat-label>Presentation / Speaking / Workshop duration</mat-label>
-          <mat-select formControlName="presentationDuration">
-            <mat-option *ngFor="let hcp of hcpRoles" value={{hcp.HCPRoleID}}>{{hcp.HCPRole}}</mat-option> 
-          </mat-select>
-        </mat-form-field>
-          <mat-form-field >
-              <mat-label></mat-label>
-              <select matNativeControl required>
-                  <option value="select event">select option</option>
-                <option value="Presentation">Presentation</option>
-                <option value="Speaking">Speaking</option>
-              </select>
+        <div class="col">
+          <mat-form-field color="accent" appearance="outline">
+            <mat-label>Presentation / Speaking / Workshop duration</mat-label>
+            <input matInput type="number" placeholder="Enter Duration in minutes" formControlName="presentationDuration">
           </mat-form-field>
-      </div>
 
-      <div class="col-6">
-          <mat-form-field >
-              <mat-label>Development of presentation /Panel session preparation</mat-label>
-              <select matNativeControl required>
-                  <option value="select event">select option</option>
-                <option value="Development of presentation">Development of presentation</option>
-                <option value="Panel session preparation">Panel session preparation</option>
-              </select>
+          <mat-form-field color="accent" appearance="outline">
+            <mat-label>Development  presentation /Panel session preparation</mat-label>
+            <input matInput type="number" placeholder="Enter Duration in minutes" formControlName="panelSessionPreparation">
           </mat-form-field>
-      </div>
 
-      <div class="col-6">
-          <mat-form-field>
-              <mat-label>Panel Discussion/session duration</mat-label>
-              <select matNativeControl required>
-                  <option value="select event">select option</option>
-                <option value="Panel Discussion">Panel Discussion</option>
-                <option value="session duration">session duration </option>
-              </select>
+          <mat-form-field color="accent" appearance="outline">
+            <mat-label>Q&A Session</mat-label>
+            <input matInput type="number" [max]="15" placeholder="Enter Duration in minutes" formControlName="qaSession">
+            <mat-hint>(Max 15 minutes)</mat-hint>
+          </mat-form-field>         
+        </div>
+        <div class="col">
+          <mat-form-field color="accent" appearance="outline">
+            <mat-label>Speaker/Trainer Briefing</mat-label>
+            <input matInput type="number" [max]="120" placeholder="Enter Duration in minutes" formControlName="briefingDuration">
+            <mat-hint>(Max 120 minutes)</mat-hint>
           </mat-form-field>
-      </div>
-      <div class="col-6">
-          <mat-form-field >
-              <mat-label>Speaker/Trainer briefing</mat-label>
-              <select matNativeControl required>
-                  <option value="select event">select option</option>
-              </select>
+  
+          <mat-form-field color="accent" appearance="outline">
+            <mat-label>Total number of hours</mat-label>
+            <input matInput type="number" placeholder="Total number of hours prepopulated" formControlName="totalHours">
           </mat-form-field>
-      </div>
 
-      <div class="col-6">
-          <mat-form-field >
-              <mat-label>Speaker/Trainer briefing</mat-label>
-              <select matNativeControl required>
-                  <option value="select event">select option</option>
-              </select>
-          </mat-form-field>
-      </div>
-      <div class="col-6">
-          <mat-form-field>
-              <mat-label>Total number of hours</mat-label>
-              <input matInput type="text" placeholder="Total number of hours prepopulated">
-          </mat-form-field>
-       </div>
-       <div class="container d-flex justify-content-end">
-          <button mat-raised-button color="accent" class="m-1" matStepperPrevious >Previous</button>
-          <button mat-raised-button color="primary" class="m-1" matStepperNext >Next</button>
-       </div>
+          <div class="container d-flex justify-content-end">
+            <button mat-raised-button color="accent" class="m-1" matStepperPrevious >Previous</button>
+            <button mat-raised-button color="primary" class="m-1" matStepperNext >Next</button>
+         </div>
+        </div>
+
+     
+
+      
+
+      
+       
      
 
       
@@ -320,7 +294,179 @@
   </div>
   
   </form>
+</mat-step>
+<mat-step label="Event-initiation5"> 
+  <form [formGroup]="eventInitiation5">
+    <div class="row">
+      <div class="col">
+          <mat-label>Is there any previous event open within 30 days?</mat-label>
+            <mat-radio-group formControlName="isHonararium">
+               <div style="display: flex; justify-content: space-evenly;">
+                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                <mat-radio-button value="No">No</mat-radio-button>
+               </div> 
+          </mat-radio-group>
 
+      </div>
+    </div>
+  </form>
+
+  <!-- <form [formGroup]="eventInitiation5">
+      <div class="row">
+
+          <div class="col-6">
+              <mat-label>Honorarium</mat-label>
+              <mat-radio-group >
+                  <div class="mt-2 p-2">
+                  <mat-radio-button value="Yes">Yes</mat-radio-button>
+                  <mat-radio-button value="No">No</mat-radio-button>
+              </div>
+              </mat-radio-group>
+          </div>
+          <div class="col-6">
+              <div class="w50 " >
+                  <mat-label>Upload NOC</mat-label>
+                  <mat-form-field >
+                      <input  type="file">
+                  </mat-form-field>
+                  
+          </div>
+          </div>
+          <div class="col-6">
+              <mat-form-field>
+                  <mat-label>Rationale</mat-label>
+                  <input matInput placeholder="Rationale" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field >
+                  <mat-label>Currency</mat-label>
+                  <select matNativeControl required>
+                      <option value="select event">select Currency</option>
+                    <option value="USD">USD</option>
+                    <option value="EURO">EURO</option>
+                  </select>
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field >
+                  <mat-label>Selection of Taxes</mat-label>
+                  <select matNativeControl required>
+                      <option value="Selection of Taxes">Selection of Taxes</option>
+                  </select>
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field >
+                  <mat-label>Benificiary Name</mat-label>
+                  <input matInput placeholder="Enter Benificiary Name" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field>
+                  <mat-label>Bank Account Number</mat-label>
+                  <input matInput placeholder="Enter Bank Account Number" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field>
+                  <mat-label>Name as per PAN</mat-label>
+                  <input matInput placeholder="Name as per PAN pre populated" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field >
+                  <mat-label>PAN Card Number</mat-label>
+                  <input matInput placeholder="PAN Card Number pre populated" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field >
+                  <mat-label>IFSC Code </mat-label>
+                  <input matInput placeholder="IFSC Code  pre populated" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <mat-form-field >
+                  <mat-label>Email ID (*optional)</mat-label>
+                  <input matInput placeholder="Email ID   pre populated" >
+                </mat-form-field>
+          </div>
+          <div class="col-6">
+              <div class="w50 " >
+                  <mat-label>Upload PAN Card prepopulated</mat-label>
+                  <mat-form-field >
+                      <input  type="file" >
+                  </mat-form-field>
+                  
+          </div>
+
+
+
+
+
+          </div>
+          <div class="col-6">
+                  <div class="w50 " >
+                      <mat-label>Upload Cheque prepopulated</mat-label>
+                      <mat-form-field >
+                          <input  type="file">
+                      </mat-form-field>
+                      
+              </div>
+
+
+
+
+
+          </div>
+          <div class="col-12 d-flex justify-content-center">
+              <button mat-button color="primary">AddNew</button>
+              <button mat-button color="accent">Save</button>
+              <button mat-button color="warn">Reset</button>
+          </div>
+          <div class="container">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>S.no</th>
+                              <th>HCP Role</th>
+                              <th>MIS Code</th>
+                              <th>Speaker/TrainerName</th>
+                              <th>GO/N-GO</th>
+                              <th>Honorarium</th>
+                              <th>Actions</th>
+                          </tr>
+                      </thead>
+                          <tbody>
+                              <tr>
+                                  <th scope="row">1</th>
+                                  <td>HCP Role - 1</td>
+                                  <td>MIS-001</td>
+                                  <td>S-N-1</td>
+                                  <td>GO</td>
+                                  <td>Yes</td>
+                                  <td>
+                                      <div class=" d-flex justify-content-center" >
+                                      <button class="btn btn-warning btn-sm ">Edit</button>
+                                 
+                                      <button class="btn btn-danger btn-sm">Delete</button>
+                                  </div>
+                                  </td>
+      
+                              </tr>
+                          </tbody>
+                     
+                       </table>
+          </div>
+          <div class="container d-flex justify-content-end">
+              <button mat-raised-button color="accent" class="m-1" matStepperPrevious >Previous</button>
+              <button mat-raised-button color="primary" class="m-1" matStepperNext >Next</button>
+          </div>
+          
+  </div>
+  
+  </form> -->
 
 </mat-step>
   <mat-step>
