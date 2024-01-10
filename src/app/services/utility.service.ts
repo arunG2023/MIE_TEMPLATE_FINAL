@@ -58,5 +58,24 @@ export class UtilityService {
     return this.http.get(this.baseAPIUrl+'/MasterSheets/GetBrandNameData')
   }
 
+  // Get Approved Speakers
+  getApprovedSpeakers(){
+    return this.http.get(this.baseAPIUrl+'/Test/GetApprovedSpeakersData');
+  }
+
+  // Get All States
+  getAllStates(){
+    return this.http.get(this.baseAPIUrl+'/MasterSheets/GetStateNameData')
+  }
+
+  // Get All City
+  getAllCities(){
+    return this.http.get(this.baseAPIUrl+'/MasterSheets/GetCityNameData')
+  }
+
+  // Get Vendor Details
+  getVendorDetails(){
+    return this.http.get(this.baseAPIUrl+'/MasterSheets/VendorMasterSheetData')
+  }
 
 }
