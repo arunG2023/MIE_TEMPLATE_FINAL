@@ -78,4 +78,9 @@ export class UtilityService {
     return this.http.get(this.baseAPIUrl+'/MasterSheets/VendorMasterSheetData')
   }
 
+  // POST event 1 reques form First set of data
+  postEvent1Data1(data:any){
+    return this.http.post(this.baseAPIUrl+'/Class1/AddData',data)
+  }
+
 }

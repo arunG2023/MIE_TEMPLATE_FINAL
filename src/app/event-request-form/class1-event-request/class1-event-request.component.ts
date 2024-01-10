@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormControlName, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 import { UtilityService } from 'src/app/services/utility.service';
 
 @Component({
@@ -32,7 +33,7 @@ export class Class1EventRequestComponent implements OnInit {
   isLinear: boolean = false;
   orientation : string ;
 
-  constructor(private utilityService : UtilityService) {
+  constructor(private utilityService : UtilityService, private auth : AuthService) {
     this.isMobileMenu();
     // Getting event types
     utilityService.getEventTypes().subscribe(
@@ -491,17 +492,28 @@ export class Class1EventRequestComponent implements OnInit {
       VenueName : this.eventInitiation2.value.venueName,
       State : this.allStates.find(state => state.StateId == this.eventInitiation2.value.state).StateName,
       City : this.allCity.find(city => city.CityId == this.eventInitiation2.value.city).CityName,
-      BenificiaryName : this.benificiaryName,
-      BankAccountNumber : this.bankAccountNumber,
+      BeneficiaryName : this.benificiaryName,
+      BankAccountNumber : this.eventInitiation6.value.bankAccountNumber,
       PanName : this.nameAsPan,
       PanCardNumber : this.panCardNumber,
       IfscCode : this.ifscCode,
-      EmailId : this.emailId,
+      EmailId : "arunguna@gmail.com",
       Invitees : this.eventInitiation7.value.invitee,
       IsAdvanceRequired : 'yes',
-      SelectionOfTaxes : this.taxSelect
+      SelectionOfTaxes : 'Inclusive',
+      BrandName : this.eventInitiation3.value.brandName,
+      HCPRole : this.eventInitiation4.value.hcpRole,
+      InitiatorName : this.auth.decodeToken()['unique_name'],
+      PercentAllocation : '90',
+      ProjectId : this.projectId
     }
     console.log(class1FinalData1)
+    this.utilityService.postEvent1Data1(class1FinalData1).subscribe(
+      res => {
+        console.log("Datta added successfully");
+      },
+      err => alert("Not Added")
+    )
   }
 
 
