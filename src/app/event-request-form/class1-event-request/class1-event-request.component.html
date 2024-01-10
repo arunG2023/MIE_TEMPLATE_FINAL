@@ -11,8 +11,9 @@
               <mat-radio-button value="Yes" class="m-2">Yes</mat-radio-button>
               <mat-radio-button value="No" class="m-2">No</mat-radio-button>
             </div>
+            <!-- <mat-error >Choose an option</mat-error> -->
           </mat-radio-group>
-          <mat-error >Choose an option</mat-error>
+          
         </div>
         <div class="col-md-6" *ngIf="toUploadDeviation1">
           <mat-label>Upload Deviation</mat-label><br>
@@ -343,8 +344,8 @@
           <mat-form-field color="accent" appearance="outline">
             <mat-label>Selection Of Taxes</mat-label>
             <mat-select [disabled]="!isHonararium" [value]="taxSelect">
-              <mat-option>Tax 1</mat-option>
-              <mat-option>Tax 2</mat-option>
+              <mat-option value="Inclusive">Inclusive of Tax</mat-option>
+              <mat-option value="Exclusive">Exclusive of Tax</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -592,8 +593,8 @@
           <mat-form-field color="accent" appearance="outline">
             <mat-label>Invitees</mat-label>
             <mat-select formControlName="invitee">
-              <mat-option>Invitee 1</mat-option>
-              <mat-option>Invitee 2</mat-option>
+              <mat-option value="invitee 1">Invitee 1</mat-option>
+              <mat-option value="invitee 2">Invitee 2</mat-option>
             </mat-select>
           </mat-form-field>
 

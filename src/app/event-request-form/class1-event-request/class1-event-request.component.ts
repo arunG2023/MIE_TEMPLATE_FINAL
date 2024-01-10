@@ -422,6 +422,11 @@ export class Class1EventRequestComponent implements OnInit {
         }
         else{
           this.isHonararium = false
+          this.bankAccountNumber = '';
+          this.nameAsPan = '';
+          this.panCardNumber = '';
+          this.ifscCode = '';
+          this.emailId = '';
         }
         if(changes.bankAccountNumber){
           // console.log(changes.bankAccountNumber)
@@ -432,6 +437,7 @@ export class Class1EventRequestComponent implements OnInit {
             const filteredVendor = this._getSelectedBankDetails(changes.bankAccountNumber);
             if(filteredVendor){
               this.isVendorPresent = true;
+              this.bankAccountNumber = filteredVendor.BankAccountNumber;
               this.benificiaryName = filteredVendor.BeneficiaryName;
               this.nameAsPan = filteredVendor.PanCardName;
               this.panCardNumber = filteredVendor.PanNumber;
@@ -469,13 +475,33 @@ export class Class1EventRequestComponent implements OnInit {
 
 
   submitForm(){
-    console.log(this.eventInitiation1.value);
-    console.log(this.eventInitiation2.value);
-    console.log(this.eventInitiation3.value);
-    console.log(this.eventInitiation4.value);
-    console.log(this.eventInitiation5.value);
-    console.log(this.eventInitiation6.value);
-    console.log(this.eventInitiation7.value);
+    // console.log(this.eventInitiation1.value);
+    // console.log(this.eventInitiation2.value);
+    // console.log(this.eventInitiation3.value);
+    // console.log(this.eventInitiation4.value);
+    // console.log(this.eventInitiation5.value);
+    // console.log(this.eventInitiation6.value);
+    // console.log(this.eventInitiation7.value);
+    const class1FinalData1 = {
+      EventTopic : this.eventInitiation2.value.eventTopic,
+      EventType : this.eventDetails.find(event => event.EventTypeId == this.eventCode ).EventType,
+      EventDate : new Date(this.eventInitiation2.value.eventDate),
+      StartTime : this.eventInitiation2.value.startTime,
+      EndTime : this.eventInitiation2.value.endTime,
+      VenueName : this.eventInitiation2.value.venueName,
+      State : this.allStates.find(state => state.StateId == this.eventInitiation2.value.state).StateName,
+      City : this.allCity.find(city => city.CityId == this.eventInitiation2.value.city).CityName,
+      BenificiaryName : this.benificiaryName,
+      BankAccountNumber : this.bankAccountNumber,
+      PanName : this.nameAsPan,
+      PanCardNumber : this.panCardNumber,
+      IfscCode : this.ifscCode,
+      EmailId : this.emailId,
+      Invitees : this.eventInitiation7.value.invitee,
+      IsAdvanceRequired : 'yes',
+      SelectionOfTaxes : this.taxSelect
+    }
+    console.log(class1FinalData1)
   }
 
 
