@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6" *ngIf="toUploadDeviation1">
           <mat-label>Upload Deviation</mat-label><br>
-          <input type="file" formControlName="uploadDeviation1">
+          <input type="file" (change)="onFileSelected($event)" formControlName="uploadDeviation1">
         </div>
       </div>
       <div class="row p-1 mb-2">
@@ -38,7 +38,7 @@
       </div>
       <div class="d-flex justify-content-end align-items-center">
         <!-- <button mat-raised-button color="warn" matStepperNext  (click)="stepper.reset()" class="m-1">Reset</button> -->
-        <button mat-raised-button color="primary" matStepperNext class="m-1">Next</button>
+        <button mat-raised-button color="primary"  matStepperNext class="m-1">Next</button>
       </div>
     </form>
   </mat-step>
@@ -194,7 +194,7 @@
 
           <mat-form-field *ngIf="showHCPRoleNameTextBox" color="accent" appearance="outline">
             <mat-label>HCP Role Name</mat-label>
-            <input matInput type="text" formControlName="hcpRoleWritten">
+            <input matInput type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="hcpRoleWritten">
             <!-- <mat-hint>If others selected selected in HCP Role</mat-hint> -->
           </mat-form-field>
 
@@ -343,7 +343,7 @@
 
           <mat-form-field color="accent" appearance="outline">
             <mat-label>Selection Of Taxes</mat-label>
-            <mat-select [disabled]="!isHonararium" [value]="taxSelect">
+            <mat-select [disabled]="!isHonararium" [(ngModel)]="taxSelect" [ngModelOptions]="{standalone: true}">
               <mat-option value="Inclusive">Inclusive of Tax</mat-option>
               <mat-option value="Exclusive">Exclusive of Tax</mat-option>
             </mat-select>
@@ -387,7 +387,7 @@
 
           <mat-form-field color="accent" appearance="outline">
             <mat-label>Email ID (*optional)</mat-label>
-            <input matInput placeholder="Email ID pre populated" [disabled]="!isHonararium" [value]="emailId">
+            <input matInput placeholder="Email ID pre populated" [disabled]="!isHonararium" [(ngModel)]="emailId" [ngModelOptions]="{standalone: true}" [value]="emailId">
           </mat-form-field>
 
           <div class="m-3">
@@ -601,8 +601,8 @@
           <mat-form-field color="accent" appearance="outline">
             <mat-label>Expense</mat-label>
             <mat-select formControlName="expense">
-              <mat-option>Expense 1</mat-option>
-              <mat-option>Expense 2</mat-option>
+              <mat-option value="expense 1">Expense 1</mat-option>
+              <mat-option value="expense 2">Expense 2</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -611,6 +611,16 @@
             <input matInput placeholder="Enter Expense amount" formControlName="expenseAmount">
             <mat-hint>(If expense selected as Food and Beverages)</mat-hint>
           </mat-form-field>
+
+          <div class="m-2">
+            <mat-label>Is Advance Required</mat-label>
+            <mat-radio-group formControlName="isAdvanceRequired">
+              <div style="display: flex; justify-content: start;">
+                <mat-radio-button value="Yes" class="m-2">Yes</mat-radio-button>
+                <mat-radio-button value="No" class="m-2">No</mat-radio-button>
+              </div>
+            </mat-radio-group>
+          </div>
 
           <div class="m-2">
             <mat-label>Amount is excluding Tax</mat-label>

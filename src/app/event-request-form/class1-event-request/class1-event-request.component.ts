@@ -30,7 +30,7 @@ export class Class1EventRequestComponent implements OnInit {
 
 
   // For Stepper Validation
-  isLinear: boolean = false;
+  isLinear: boolean = true;
   orientation : string ;
 
   constructor(private utilityService : UtilityService, private auth : AuthService) {
@@ -95,7 +95,7 @@ export class Class1EventRequestComponent implements OnInit {
     
     this.eventInitiation1 = new FormGroup({
       withIn30days : new FormControl('',Validators.required),
-      uploadDeviation1 : new FormControl(''),
+      uploadDeviation1 : new FormControl('', ),
       withIn7days : new FormControl('',Validators.required),
       uploadDeviation2 : new FormControl('')
      
@@ -122,7 +122,7 @@ export class Class1EventRequestComponent implements OnInit {
 
     this.eventInitiation4 = new FormGroup({
       hcpRole : new FormControl('',[Validators.required]),
-      hcpRoleWritten : new FormControl('',[Validators.required]),
+      // hcpRoleWritten : new FormControl('',[Validators.required]),
       misCode : new FormControl('', MISValidator),
       // speakerName : new FormControl('',[Validators.required]),
       // speakerCode : new FormControl('',[Validators.required]),
@@ -147,7 +147,7 @@ export class Class1EventRequestComponent implements OnInit {
       // otherCurrency : new FormControl('',),
       // taxSelect : new FormControl({value : '',disabled : !this.isHonararium}),
       // benficiaryName : new FormControl('',[Validators.required]),
-      bankAccountNumber : new FormControl('',[Validators.required]),
+      bankAccountNumber : new FormControl((this.isHonararium)?'':"Bank Account Number",[Validators.required]),
       // nameAsPan : new FormControl('',[Validators.required]),
       // panCardNumber : new FormControl('',[Validators.required]),
       // ifscCode : new FormControl('',[Validators.required]),
@@ -160,6 +160,7 @@ export class Class1EventRequestComponent implements OnInit {
       invitee : new FormControl('',[Validators.required]),
       expense : new FormControl('',[Validators.required]),
       expenseAmount : new FormControl('',[Validators.required]),
+      isAdvanceRequired : new FormControl('',Validators.required),
       isExcludingTax : new FormControl('',[Validators.required]),
       uploadExpenseDeviation : new FormControl('',[Validators.required]),
       isBtc : new FormControl('',[Validators.required]),
@@ -184,23 +185,35 @@ export class Class1EventRequestComponent implements OnInit {
   }
 
   // Event Initiation Form1 COntrol
+  static upload1: any ;
+  static withIn30Days : boolean;
  
 
   event1FormPrepopulate(){
+   
     this.eventInitiation1.valueChanges.subscribe(changes => {
+      // Class1EventRequestComponent.upload1 = changes.uploadDeviation1;
+      // if(changes.uploadDeviation1){
+      //   // console.log(changes.uploadDeviation1)
+      //   // Class1EventRequestComponent.upload1 = changes.uploadDeviation1;
+      //   // Step1Validator(changes.uploadDeviation1);
+       
+      // }
       // console.log(this.eventInitiation1.controls.uploadDeviation1.valid)
       this.toUploadDeviation1 = (changes.withIn30days == 'Yes')? true : false;
       this.toUploadDeviation2 = (changes.withIn7days == 'Yes')? true : false;
-      if(this.toUploadDeviation1) this.eventInitiation1.controls.uploadDeviation1.addValidators([Validators.required])
-      else {
-          this.eventInitiation1.controls.uploadDeviation1.setValidators(null)
-          // this.eventInitiation1.controls.uploadDeviation1.setValue('aa')
-          // this.eventInitiation1.
-          // this.eventInitiation1.controls.uploadDeviation1.reset();
-          // console.log(this.eventInitiation1.controls.uploadDeviation1.valid)
+      if(this.toUploadDeviation1) Class1EventRequestComponent.withIn30Days = true;
+      else Class1EventRequestComponent.withIn30Days = false;
+      // if(this.toUploadDeviation1) this.eventInitiation1.controls.uploadDeviation1.addValidators([Validators.required])
+      // else {
+      //     this.eventInitiation1.controls.uploadDeviation1.setValidators(null)
+      //     // this.eventInitiation1.controls.uploadDeviation1.setValue('aa')
+      //     // this.eventInitiation1.
+      //     // this.eventInitiation1.controls.uploadDeviation1.reset();
+      //     // console.log(this.eventInitiation1.controls.uploadDeviation1.valid)
           
-      }
-      if(this.toUploadDeviation2) this.eventInitiation1.controls.uploadDeviation2.addValidators([Validators.required])
+      // }
+      // if(this.toUploadDeviation2) this.eventInitiation1.controls.uploadDeviation2.addValidators([Validators.required])
      
     })
   }
@@ -312,6 +325,7 @@ export class Class1EventRequestComponent implements OnInit {
   speciality : string = '';
   tier : string = '';
   goNonGo : string = '';
+  hcpRoleWritten : string = '';
 
   event4FormPrepopulate(){
     
@@ -497,14 +511,14 @@ export class Class1EventRequestComponent implements OnInit {
       PanName : this.nameAsPan,
       PanCardNumber : this.panCardNumber,
       IfscCode : this.ifscCode,
-      EmailId : "arunguna@gmail.com",
+      EmailId : this.emailId,
       Invitees : this.eventInitiation7.value.invitee,
-      IsAdvanceRequired : 'yes',
-      SelectionOfTaxes : 'Inclusive',
+      IsAdvanceRequired : this.eventInitiation7.value.isAdvanceRequired,
+      SelectionOfTaxes : this.taxSelect,
       BrandName : this.eventInitiation3.value.brandName,
-      HCPRole : this.eventInitiation4.value.hcpRole,
+      HCPRole : (this.eventInitiation4.value.hcpRole !== 'H6')? this.eventInitiation4.value.hcpRole : this.hcpRoleWritten ,
       InitiatorName : this.auth.decodeToken()['unique_name'],
-      PercentAllocation : '90',
+      PercentAllocation : this.percentageAllocation.toString(),
       ProjectId : this.projectId
     }
     console.log(class1FinalData1)
@@ -536,6 +550,21 @@ export class Class1EventRequestComponent implements OnInit {
     }
 };
 
+  // File Upload Check
+  selectedFile : File | null;
+  onFileSelected(event:any){
+    this.selectedFile = event.target.files[0];
+    const formData = new FormData();
+    formData.append('File 1', this.selectedFile);
+    console.log(formData.get('File 1'))
+   
+  }
+
+
+
+  stepControl1 = new FormGroup({
+    step1 : new FormControl('',Step1Validator)
+  })
   
 
 
@@ -568,4 +597,21 @@ function MISValidator(control : AbstractControl): ValidationErrors | null{
     // console.log("Yes")
     return {customError : true}
   }
+}
+
+function Step1Validator(control : AbstractControl): ValidationErrors | null{
+  console.log(Class1EventRequestComponent.upload1)
+  console.log(Class1EventRequestComponent.withIn30Days)
+  if(Class1EventRequestComponent.withIn30Days){
+    if(Class1EventRequestComponent.upload1){
+      return null;
+    }
+    else{
+      return {customError : true};
+    }
+  }
+  else{
+    return null;
+  }
+ 
 }
