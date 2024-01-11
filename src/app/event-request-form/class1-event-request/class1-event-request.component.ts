@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormControlName, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UtilityService } from 'src/app/services/utility.service';
 
@@ -30,10 +31,10 @@ export class Class1EventRequestComponent implements OnInit {
 
 
   // For Stepper Validation
-  isLinear: boolean = true;
+  isLinear: boolean = false;
   orientation : string ;
 
-  constructor(private utilityService : UtilityService, private auth : AuthService) {
+  constructor(private utilityService : UtilityService, private auth : AuthService, private router : Router) {
     this.isMobileMenu();
     // Getting event types
     utilityService.getEventTypes().subscribe(
@@ -132,11 +133,12 @@ export class Class1EventRequestComponent implements OnInit {
     })
 
     this.eventInitiation5 = new FormGroup({
-      presentationDuration : new FormControl('',[Validators.required]),
-      panelSessionPreparation : new FormControl('',[Validators.required]),
-      qaSession : new FormControl('',[Validators.required]),
-      briefingDuration : new FormControl('',[Validators.required]),
-      totalHours : new FormControl('',[Validators.required])
+      presentationDuration : new FormControl(0,[Validators.required]),
+      panelSessionPreparation : new FormControl(0,[Validators.required]),
+      qaSession : new FormControl(0,[Validators.required]),
+      briefingDuration : new FormControl(0,[Validators.required]),
+      panelDiscussionDuration : new FormControl(0,[Validators.required]),
+      // totalHours : new FormControl('',[Validators.required])
     })
 
     this.eventInitiation6 = new FormGroup({
@@ -147,7 +149,7 @@ export class Class1EventRequestComponent implements OnInit {
       // otherCurrency : new FormControl('',),
       // taxSelect : new FormControl({value : '',disabled : !this.isHonararium}),
       // benficiaryName : new FormControl('',[Validators.required]),
-      bankAccountNumber : new FormControl((this.isHonararium)?'':"Bank Account Number",[Validators.required]),
+      bankAccountNumber : new FormControl(' ',[Validators.required]),
       // nameAsPan : new FormControl('',[Validators.required]),
       // panCardNumber : new FormControl('',[Validators.required]),
       // ifscCode : new FormControl('',[Validators.required]),
@@ -159,12 +161,13 @@ export class Class1EventRequestComponent implements OnInit {
     this.eventInitiation7 = new FormGroup({
       invitee : new FormControl('',[Validators.required]),
       expense : new FormControl('',[Validators.required]),
-      expenseAmount : new FormControl('',[Validators.required]),
+      expenseAmount : new FormControl(0,),
+      isLocalConveyance : new FormControl('No',),
       isAdvanceRequired : new FormControl('',Validators.required),
       isExcludingTax : new FormControl('',[Validators.required]),
       uploadExpenseDeviation : new FormControl('',[Validators.required]),
       isBtc : new FormControl('',[Validators.required]),
-      toCalculateExpense : new FormControl('',[Validators.required]),
+      toCalculateExpense : new FormControl('No',[Validators.required]),
       finalAmount : new FormControl('',[Validators.required]),
       btcTotalAmount : new FormControl('',[Validators.required]),
       bteTotalAmount : new FormControl('',[Validators.required]),
@@ -181,6 +184,8 @@ export class Class1EventRequestComponent implements OnInit {
     this.event6FormPrepopulate();
     this.event2FormPrepopulate();
     this.event3FormPrepopulate();
+    this.event5FormPrepopulate();
+    this.event7FormPrepopulate();
     
   }
 
@@ -282,7 +287,7 @@ export class Class1EventRequestComponent implements OnInit {
       // this.showBrandTable = true;
       // 
       const brand = {
-        brandName : this.eventInitiation3.value.brandName,
+        brandName : this.brandNames.find(brand => brand.BrandId == this.eventInitiation3.value.brandName).BrandName,
         percentageAllocation : this.percentageAllocation,
         projectId : this.projectId
       }
@@ -311,6 +316,10 @@ export class Class1EventRequestComponent implements OnInit {
 
   private _getBrandWithId(brandId){
     return this.brandNames.find(brand => brand.BrandId == brandId)
+  }
+
+  sendBrandDetails(){
+    console.log(this.brandTableDetails)
   }
 
 
@@ -362,6 +371,8 @@ export class Class1EventRequestComponent implements OnInit {
             this.speciality = filteredSpeaker.Speciality;
             this.goNonGo = (filteredSpeaker.isNonGO == "yes")? 'Non GO' : 'GO';
             this.tier = filteredSpeaker.TierType;  
+
+            this.getRemuneration(this.speciality,this.tier);
           }
           else{
             this.speakerName  = "";
@@ -396,6 +407,39 @@ export class Class1EventRequestComponent implements OnInit {
     })
 
   }
+
+  // Event Initiation Form5 Control
+  totalHours : any;
+  remuneration : any;
+  remunerationToCalculate : any;
+  event5FormPrepopulate(){
+    this.eventInitiation5.valueChanges.subscribe(
+      changes => {
+        // console.log(changes);
+        
+        this.totalHours = ((changes.presentationDuration + changes.panelDiscussionDuration + 
+                          changes.panelSessionPreparation + changes.qaSession + changes.briefingDuration)/60).toFixed(2);
+        if(this.totalHours >= 8){
+          alert("Max of 8 hours only")
+        }
+        this.remuneration = (this.remunerationToCalculate * this.totalHours);
+
+      }
+    )
+  }
+
+  getRemuneration(speciality,tier){
+    this.utilityService.getFmv(speciality,tier).subscribe(
+      res => {
+        console.log(res)
+        this.remunerationToCalculate = res;
+      },
+      err => {
+        alert("Unexpected Error Happened")
+      }
+    )
+  }
+
 
   // Event Initiation Form6 Control
   showUploadNOC : boolean = false;
@@ -488,6 +532,50 @@ export class Class1EventRequestComponent implements OnInit {
     })
   }
 
+  // Event Inititaion Form7 COntrol
+  showExpenseTextBox : boolean = false;
+  showTotalExpense : boolean = false;
+
+  expenseTableDetails : any;
+  localConveyanceNeeded : boolean = false;
+
+  event7FormPrepopulate(){
+    this.eventInitiation7.valueChanges.subscribe(
+      changes => {
+      
+        if(changes.expense == 'e2'){
+          this.showExpenseTextBox = true;
+        }
+        else{
+          this.showExpenseTextBox = false;
+        }
+        if(changes.toCalculateExpense == 'Yes'){
+          this.showTotalExpense = true;
+        }
+        else{
+          this.showTotalExpense = false;
+        }
+        if(changes.isLocalConveyance == 'Yes'){
+          this.localConveyanceNeeded = true;
+        }
+        else this.localConveyanceNeeded = false;
+
+        if(changes.invitee && changes.expense && changes.isAdvanceRequired && changes.isExcludingTax && changes.isBtc){
+          console.log(changes)
+        }
+      }
+    )
+  }
+
+  addInviteesToTable(){
+    const invitee = {
+      invitee : 'aa'
+    };
+
+  }
+  
+  
+
 
   submitForm(){
     // console.log(this.eventInitiation1.value);
@@ -506,28 +594,51 @@ export class Class1EventRequestComponent implements OnInit {
       VenueName : this.eventInitiation2.value.venueName,
       State : this.allStates.find(state => state.StateId == this.eventInitiation2.value.state).StateName,
       City : this.allCity.find(city => city.CityId == this.eventInitiation2.value.city).CityName,
-      BeneficiaryName : this.benificiaryName,
-      BankAccountNumber : this.eventInitiation6.value.bankAccountNumber,
-      PanName : this.nameAsPan,
-      PanCardNumber : this.panCardNumber,
-      IfscCode : this.ifscCode,
-      EmailId : this.emailId,
-      Invitees : this.eventInitiation7.value.invitee,
-      IsAdvanceRequired : this.eventInitiation7.value.isAdvanceRequired,
-      SelectionOfTaxes : this.taxSelect,
-      BrandName : this.eventInitiation3.value.brandName,
-      HCPRole : (this.eventInitiation4.value.hcpRole !== 'H6')? this.eventInitiation4.value.hcpRole : this.hcpRoleWritten ,
-      InitiatorName : this.auth.decodeToken()['unique_name'],
+      // BeneficiaryName : this.benificiaryName,
+      // BankAccountNumber : this.eventInitiation6.value.bankAccountNumber,
+      // PanName : this.nameAsPan,
+      // PanCardNumber : this.panCardNumber,
+      // IfscCode : this.ifscCode,
+      // EmailId : this.emailId,
+      // Invitees : this.eventInitiation7.value.invitee,
+      IsAdvanceRequired : this.eventInitiation7.value.isAdvanceRequired || 'No',
+      // SelectionOfTaxes : this.taxSelect,
+      BrandName : this._getBrandWithId(this.eventInitiation3.value.brandName).BrandName,
+      HCPRole :   (this.eventInitiation4.value.hcpRole !== 'H6')? this.hcpRoles.find(role =>  role.HCPRoleID === this.eventInitiation4.value.hcpRole).HCPRole : this.hcpRoleWritten, 
+      // InitiatorName : this.auth.decodeToken()['unique_name'],
       PercentAllocation : this.percentageAllocation.toString(),
-      ProjectId : this.projectId
+      ProjectId : this.projectId,
     }
     console.log(class1FinalData1)
     this.utilityService.postEvent1Data1(class1FinalData1).subscribe(
       res => {
-        console.log("Datta added successfully");
+        console.log("Data added successfully");
+        alert('Event Submitted Successfully');
+        this.router.navigate(['dashboard']);
+        
       },
       err => alert("Not Added")
     )
+
+    const class1FinalData2 = {
+      HcpRoleId : this.eventInitiation4.value.hcpRole,
+      MISCode : this.eventInitiation4.value.misCode,
+      SpeakerCode : this.speakerCode,
+      TrainerCode : "null",
+      HonarariumRequired : this.eventInitiation6.value.isHonararium,
+      Speciality : this.speciality,
+      Tier : this.tier,
+      'Go/NGo' : this.goNonGo,
+      PresentationDuration : this.eventInitiation5.value.presentationDuration+"",
+      PanelSessionPresentationDuration : this.eventInitiation5.value.panelSessionPreparation+"",
+      PanelDiscussionDuration : this.eventInitiation5.value.panelDiscussionDuration+"",
+      QASessionDuration : this.eventInitiation5.value.qaSession+"",
+      BriefingSession : this.eventInitiation5.value.briefingDuration+"",
+      TotalSessiionHours : this.totalHours+"",
+      Rationale :this.eventInitiation6.value.rationale
+
+    }
+    console.log(class1FinalData2)
   }
 
 

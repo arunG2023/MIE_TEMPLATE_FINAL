@@ -10,28 +10,32 @@ export class HonarariumPaymentRequestComponent implements OnInit {
 
   stepper: any;
   honorarium:FormGroup;
-  Is2DaysUpload:boolean=false;
-  isItGST:boolean=false;
-  Islessthen5:boolean=false;
+
+
+  
+
+  show2DaysUpload : boolean = false;
+  showGSTUpload : boolean = false;
+  showLessThan5 : boolean = false;
   
   
     constructor() {
       this.honorarium = new FormGroup({
-        workingdays:new FormControl('',Validators.required),
-        uploadDeviation:new FormControl('',Validators.required),
-        UploadSpeakerAgreement:new FormControl('',Validators.required),
-        UploadPhotos:new FormControl('',Validators.required),
-        UploadFinalHonorariumDetails:new FormControl('',Validators.required),
-        IsitincludingGST:new FormControl('',Validators.required),
-        UploadDetails:new FormControl('',Validators.required),
-        Entertotalattendance:new FormControl('',Validators.required),
-        IsInviteeslessthan5:new FormControl('',Validators.required),
-        UploadDetails1:new FormControl('',Validators.required)
+        isAfter2Days:new FormControl('',Validators.required),
+        uploadDeviation : new FormControl(''),
+        uploadSpeakerAgreement : new FormControl(''),
+        uploadPhotos : new FormControl(''),
+        uploadFinalHonorariumDetails : new FormControl(''),
+        uploadDetails : new FormControl(''),
+        isItIncludingGST : new FormControl(''),
+        isInviteeslessthan5 : new FormControl(''),
+        UploadDetails1 : new FormControl('')
     
       })
    
   }
     ngOnInit(): void {
+      this.showUpload()
       
     }
   
@@ -39,9 +43,9 @@ export class HonarariumPaymentRequestComponent implements OnInit {
     {
       this.honorarium.valueChanges.subscribe(chanegs => 
         {
-          this.Is2DaysUpload = (chanegs.workingdays == 'Yes')?true:false;
-          this.isItGST = (chanegs.includingGST == 'Yes')?true:false;
-          this.Islessthen5 = (chanegs.IsInviteeslessthan5 == 'Yes')?true:false;
+          this.show2DaysUpload = (chanegs.isAfter2Days == 'Yes')?true:false;
+          this.showGSTUpload = (chanegs.isItIncludingGST == 'Yes')?true:false;
+          this.showLessThan5 = (chanegs.isInviteeslessthan5 == 'Yes')?true:false;
         })
     }
   

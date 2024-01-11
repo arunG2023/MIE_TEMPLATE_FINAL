@@ -83,4 +83,9 @@ export class UtilityService {
     return this.http.post(this.baseAPIUrl+'/Class1/AddData',data)
   }
 
+  // Get Remuneration Value
+  getFmv(speaciality,tier){
+    return this.http.get(`http://localhost:5098/api/Test/GetfmvColumnValue?specialty=${speaciality}&columnTitle=${tier}`)
+  }
+
 }
