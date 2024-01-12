@@ -88,4 +88,9 @@ export class UtilityService {
     return this.http.get(`http://localhost:5098/api/Test/GetfmvColumnValue?specialty=${speaciality}&columnTitle=${tier}`)
   }
 
+  // POST brandNames
+  postBrandNames(brands){
+    return this.http.post(this.baseAPIUrl+"/EventRequestBrandsList/AddDataList",brands)
+  }
+
 }

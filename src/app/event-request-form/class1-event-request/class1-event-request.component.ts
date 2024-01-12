@@ -31,7 +31,7 @@ export class Class1EventRequestComponent implements OnInit {
 
 
   // For Stepper Validation
-  isLinear: boolean = false;
+  isLinear: boolean = true;
   orientation : string ;
 
   constructor(private utilityService : UtilityService, private auth : AuthService, private router : Router) {
@@ -149,7 +149,7 @@ export class Class1EventRequestComponent implements OnInit {
       // otherCurrency : new FormControl('',),
       // taxSelect : new FormControl({value : '',disabled : !this.isHonararium}),
       // benficiaryName : new FormControl('',[Validators.required]),
-      bankAccountNumber : new FormControl(' ',[Validators.required]),
+      bankAccountNumber : new FormControl('',),
       // nameAsPan : new FormControl('',[Validators.required]),
       // panCardNumber : new FormControl('',[Validators.required]),
       // ifscCode : new FormControl('',[Validators.required]),
@@ -163,7 +163,7 @@ export class Class1EventRequestComponent implements OnInit {
       expense : new FormControl('',[Validators.required]),
       expenseAmount : new FormControl(0,),
       isLocalConveyance : new FormControl('No',),
-      isAdvanceRequired : new FormControl('',Validators.required),
+      isAdvanceRequired : new FormControl('No',Validators.required),
       isExcludingTax : new FormControl('',[Validators.required]),
       uploadExpenseDeviation : new FormControl('',[Validators.required]),
       isBtc : new FormControl('',[Validators.required]),
@@ -287,9 +287,9 @@ export class Class1EventRequestComponent implements OnInit {
       // this.showBrandTable = true;
       // 
       const brand = {
-        brandName : this.brandNames.find(brand => brand.BrandId == this.eventInitiation3.value.brandName).BrandName,
-        percentageAllocation : this.percentageAllocation,
-        projectId : this.projectId
+        BrandName : this.brandNames.find(brand => brand.BrandId == this.eventInitiation3.value.brandName).BrandName,
+        PercentAllocation : this.percentageAllocation+"",
+        ProjectId : this.projectId
       }
       this.brandTableDetails.push(brand);
       this.showBrandTable = true;
@@ -320,6 +320,14 @@ export class Class1EventRequestComponent implements OnInit {
 
   sendBrandDetails(){
     console.log(this.brandTableDetails)
+    this.utilityService.postBrandNames(this.brandTableDetails).subscribe(
+      res => {
+        console.log(res)
+      },
+      err => {
+        alert("Brands not added")
+      }
+    )
   }
 
 
@@ -585,40 +593,51 @@ export class Class1EventRequestComponent implements OnInit {
     // console.log(this.eventInitiation5.value);
     // console.log(this.eventInitiation6.value);
     // console.log(this.eventInitiation7.value);
-    const class1FinalData1 = {
-      EventTopic : this.eventInitiation2.value.eventTopic,
-      EventType : this.eventDetails.find(event => event.EventTypeId == this.eventCode ).EventType,
-      EventDate : new Date(this.eventInitiation2.value.eventDate),
-      StartTime : this.eventInitiation2.value.startTime,
-      EndTime : this.eventInitiation2.value.endTime,
-      VenueName : this.eventInitiation2.value.venueName,
-      State : this.allStates.find(state => state.StateId == this.eventInitiation2.value.state).StateName,
-      City : this.allCity.find(city => city.CityId == this.eventInitiation2.value.city).CityName,
-      // BeneficiaryName : this.benificiaryName,
-      // BankAccountNumber : this.eventInitiation6.value.bankAccountNumber,
-      // PanName : this.nameAsPan,
-      // PanCardNumber : this.panCardNumber,
-      // IfscCode : this.ifscCode,
-      // EmailId : this.emailId,
-      // Invitees : this.eventInitiation7.value.invitee,
-      IsAdvanceRequired : this.eventInitiation7.value.isAdvanceRequired || 'No',
-      // SelectionOfTaxes : this.taxSelect,
-      BrandName : this._getBrandWithId(this.eventInitiation3.value.brandName).BrandName,
-      HCPRole :   (this.eventInitiation4.value.hcpRole !== 'H6')? this.hcpRoles.find(role =>  role.HCPRoleID === this.eventInitiation4.value.hcpRole).HCPRole : this.hcpRoleWritten, 
-      // InitiatorName : this.auth.decodeToken()['unique_name'],
-      PercentAllocation : this.percentageAllocation.toString(),
-      ProjectId : this.projectId,
-    }
-    console.log(class1FinalData1)
-    this.utilityService.postEvent1Data1(class1FinalData1).subscribe(
-      res => {
-        console.log("Data added successfully");
-        alert('Event Submitted Successfully');
-        this.router.navigate(['dashboard']);
-        
-      },
-      err => alert("Not Added")
-    )
+
+    if(this.eventInitiation2.value.eventTopic &&  this.eventCode && this.eventInitiation2.value.eventDate &&
+      this.eventInitiation2.value.startTime && this.eventInitiation2.value.endTime  && this.eventInitiation2.value.venueName &&
+      this.eventInitiation2.value.state && this.eventInitiation2.value.city && this.eventInitiation7.value.isAdvanceRequired &&
+      this.eventInitiation3.value.brandName && this.eventInitiation4.value.hcpRole && this.percentageAllocation &&  this.projectId){
+        const class1FinalData1 = {
+          EventTopic : this.eventInitiation2.value.eventTopic,
+          EventType : this.eventDetails.find(event => event.EventTypeId == this.eventCode ).EventType,
+          EventDate : new Date(this.eventInitiation2.value.eventDate),
+          StartTime : this.eventInitiation2.value.startTime,
+          EndTime : this.eventInitiation2.value.endTime,
+          VenueName : this.eventInitiation2.value.venueName,
+          State : this.allStates.find(state => state.StateId == this.eventInitiation2.value.state).StateName,
+          City : this.allCity.find(city => city.CityId == this.eventInitiation2.value.city).CityName,
+          // BeneficiaryName : this.benificiaryName,
+          // BankAccountNumber : this.eventInitiation6.value.bankAccountNumber,
+          // PanName : this.nameAsPan,
+          // PanCardNumber : this.panCardNumber,
+          // IfscCode : this.ifscCode,
+          // EmailId : this.emailId,
+          // Invitees : this.eventInitiation7.value.invitee,
+          IsAdvanceRequired : this.eventInitiation7.value.isAdvanceRequired || 'No',
+          // SelectionOfTaxes : this.taxSelect,
+          BrandName : this._getBrandWithId(this.eventInitiation3.value.brandName).BrandName,
+          HCPRole :   (this.eventInitiation4.value.hcpRole !== 'H6')? this.hcpRoles.find(role =>  role.HCPRoleID === this.eventInitiation4.value.hcpRole).HCPRole : this.hcpRoleWritten, 
+          // InitiatorName : this.auth.decodeToken()['unique_name'],
+          PercentAllocation : this.percentageAllocation.toString(),
+          ProjectId : this.projectId,
+        }
+        console.log(class1FinalData1)
+        this.utilityService.postEvent1Data1(class1FinalData1).subscribe(
+          res => {
+            console.log("Data added successfully");
+            alert('Event Submitted Successfully');
+            this.router.navigate(['dashboard']);
+            
+          },
+          err => alert("Not Added")
+        )
+
+      }
+      else{
+        alert("Some Fields are missing")
+      }
+    
 
     const class1FinalData2 = {
       HcpRoleId : this.eventInitiation4.value.hcpRole,
@@ -638,7 +657,7 @@ export class Class1EventRequestComponent implements OnInit {
       Rationale :this.eventInitiation6.value.rationale
 
     }
-    console.log(class1FinalData2)
+    // console.log(class1FinalData2)
   }
 
 
@@ -676,6 +695,11 @@ export class Class1EventRequestComponent implements OnInit {
   stepControl1 = new FormGroup({
     step1 : new FormControl('',Step1Validator)
   })
+  
+
+  //Min Date
+  today:string = new Date().toISOString().split('T')[0];
+ 
   
 
 
